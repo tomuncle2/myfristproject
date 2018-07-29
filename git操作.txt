@@ -1,0 +1,179 @@
+cmd
+
+gitbash
+
+git init
+
+git设置用户名和电子邮件  可以设置当前仓库的局部配置   还是全局配置
+用户信息存放在c盘用户 caidi .gitconfig文件里面
+
+git nanao hidex.html (创建文件)
+
+git mkdir 文件夹名
+
+1，touch+文件名，直接新建一个文件
+
+2，vi+文件名，新建一个文件并进入编辑状态（如果文件已存在，则直接进入编辑状态）
+
+git  help config
+
+git add 命令行: 
+ 将文件给git跟踪
+
+git add Doucmentation/\*.txt  把Doucmentation目录下所有txt文件添加
+
+git add index.html
+git add *.html
+
+提交到本地仓库
+git commit   检查暂存区并提交
+
+git commit -am "更新暂存区并commit" 
+
+添加注释
+git commit -m "修改了版本内容"
+
+
+git log 查看日志
+
+git status 查看当前文件和提交状态
+
+查看版本号 日期 提交者邮箱   添加的注释
+
+版本号(提交号) 全球唯一
+
+暂存区  .git 
+index文件里面
+
+工作区   objects里面
+
+本地仓库
+
+/*关于撤销*/
+删除文件可以放弃跟踪
+
+当我们需要删除暂存区或分支上的文件, 同时工作区也不需要这个文件了, 可以使用
+
+1 git rm file_path
+2 git commit -m 'delete somefile'
+3 git push
+当我们需要删除暂存区或分支上的文件, 但本地又需要使用, 只是不希望这个文件被版本控制, 可以使用
+
+git rm --cached file_path
+git commit -m 'delete remote somefile'
+git push
+ 
+从本地仓库撤销 commit
+git reset  文件名
+
+
+会撤销该次提交，删除本地仓库提交内容 然后把暂存区恢复到上一次提交前   就算此时文件已经丢失跟踪，也会恢复
+
+/*分支*/
+git  barch barchname
+//这会在当前commit 对象上新建一个分支指针
+
+$ git checkout testing //转换到新建的testing分支
+
+合并上面两条命令
+创建并转到分支
+git checkout -b barchname
+
+合并情况 ：没有分歧 fast forward    当前分支指针直接上移到(指向)下一个分支 不会创建新分支
+
+有分歧  则创建一个新分支  新分支基于两分支和两分支的最佳父分支（git算法自动完成） 
+git merge 分支名后  若冲突在没有解决前，不能切换分支，此时 手工修改冲突文件 然后git add
+
+git commit   最后就会产生新分支（三方分支） 
+
+在一个分支上合并另一个分支
+$ git checkout master
+$ git merge hotfix  合并分支
+
+删除分支
+git branch -d  branchname
+
+合并
+手动修改文件后
+git add xxx
+git commit "fs"
+分支合并完成
+
+当你正在进行项目中某一部分的工作，里面的东西处于一个比较杂乱的状态，而你想转到其他分支上进行一些工作。问题是，你不想提交进行了一半的工作，否则以后你无法回到这个工作点。解决这个问题的办法就是git stash命令。
+stash 储藏
+git stash （储藏当前状态之后，就能切换到别的分支）
+git stash list (查看储藏状态的列表) 名字 如stash@{0}
+git stash apply 储藏的名字 （回到原来的分支之后，如何恢复到之前那种混乱的工作状态）
+
+
+/**************************************************************************************************/
+
+
+生成keyssh-keygen -t rsa -C"你配置的电子邮件"
+
+公钥 和私钥
+锁   钥匙
+公钥可以放在远程托管网站
+
+乌龟需要特殊的私匙，用工具生成。乌龟git添加私钥 （安装目录的里面的puttgen.exe）
+
+
+把生成的公钥文件用记事本之类的文本编辑软件打开，复制到网站相应的key中
+
+测试ssh是否成功
+ssh -T git@git服务器地址
+
+乌龟使用总结   对每一个仓库可以设置 用户名 和邮箱地址来区分   ，实际push clone时还是需要邮箱和密码
+gitclone   需要设置一个远端url，和一个乌龟私匙  (默认会本地创建一个master分支 和在config下创建一个远端 remoto的数据源origin来联系远端master分支)
+push  配置一个remoto(可以自定义) origin(远端仓库分支源名字)名字，url,一个本地乌龟私匙
+
+
+
+
+远程仓库
+/**************************************************************************************************/
+推送数据到远程仓库
+
+注册远程版本库
+$git remote add 远程仓库名(我们一般使用origin) 仓库URLgit push -u [远程仓库名remote-name] [本地推送的分支名 local branch-name]//推送本地仓库的所有分支到远程仓库上去git push -u [远程仓库名remote-name] --all-u 表示参数建立追踪。?这样git status 时会显示本地分支和远程分支的偏离情况。只有在所克隆的服务器上有写权限，并且同一时刻没有其他人在推数据，这条命令才会如期完成任务。如果在你推数据前，已经有其他人推送了若干更新，那你的推送操作就会被驳回。你必须先把他们的更新抓取到本地，合并到自己的项目中，然后才可以再次推送。
+一个人的推送拉取不会冲突
+
+
+
+推送数据到远程仓库git push origin master把本地的master分支推送给了远程仓库origin,并且在远程仓库origin中创建了一个远程的master分支，远程的master分支和本地分支master关联
+
+
+git push origin -all 推送本地所有分支
+
+如何查看本地分支与远程分支的联系git branch –vv
+
+
+问题 如果本地有个master 和远程的 origin/master分支没有建立跟踪关联需要使用git branch --set-upstream master origin/origin
+
+
+
+查看当前远程仓库git remote –v
+
+/**********/
+从远程仓库抓取数据正如之前所看到的，可以用下面的命令从远程仓库抓取数据到本地：$ git fetch 远程仓库名（从远程仓库抓取到本地仓库，但不影响工作区）
+
+远程仓库的分支合并$ git merge 远程仓库名/分支名（合并分支）例如  $ git merge origin/master
+
+$ git pull相当于$ git fetch $git merge远程仓库名/分支名
+********************/
+
+查看远程仓库信息git remote show [remote-name]
+
+
+
+远程仓库的删除git remote rm 远程仓库名
+
+跟踪远程分支git checkout –b [本地分支名] [远程仓库名]/[分支名]git branch --track [本地分支名] [远程仓库名]/[分支名]注意这个是新建一个本地分支，然后跟踪关联远程分支，如果对已经存在的本地分支，关联某一个远程分支，请使用git branch --set-upstream [本地分支名] [远程仓库名]/[分支名]
+远程仓库的重命名git remote rename 原名 新名字
+
+
+git remote addgit clonegit pushgit remote –vssh 生成公钥私钥文件git fetchgit mergegit pull
+
+远程日志 git log --no-merges 远程仓库名/分支   myorigin/master
+
+
